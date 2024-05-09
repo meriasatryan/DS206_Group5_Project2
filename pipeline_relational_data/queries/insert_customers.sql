@@ -1,2 +1,2 @@
 -- File: insert_customers.sql
--- Description: Inserts a new customer into the customers table. Parameters are expected for customer details.
+-- Description: Inserts a new customer into the customers table. Parameters are expected for customer details

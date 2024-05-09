@@ -1,17 +1,17 @@
 -- Description: SQL Script for Creating Tables within the Relational Database
 -- Filename: relational_db_table_creation.sql
-USE ORDERS_RELATIONAL_DB; -- Make sure to select your database
+USE ORDERS_RELATIONAL_DB; 
 GO
 
 CREATE TABLE Categories (
-    CategoryID INT,
+    CategoryID INT NOT NULL,
     CategoryName VARCHAR(255),
     Description VARCHAR(255)
 );
 
 -- Create table for Customers
 CREATE TABLE Customers (
-    CustomerID VARCHAR(10),
+    CustomerID VARCHAR(10) NOT NULL,
     CompanyName VARCHAR(255),
     ContactName VARCHAR(255),
     ContactTitle VARCHAR(255),
@@ -27,7 +27,7 @@ CREATE TABLE Customers (
 
 -- Create table for Employees
 CREATE TABLE Employees (
-    EmployeeID INT,
+    EmployeeID INT NOT NULL,
     LastName VARCHAR(255),
     FirstName VARCHAR(255),
     Title VARCHAR(255),
@@ -48,9 +48,9 @@ CREATE TABLE Employees (
 
 
 -- Create table for Orders
-CREATE TABLE Orders (
-    OrderID INT,
-    ProductID INT,
+CREATE TABLE OrderDetails (
+    OrderID INT NOT NULL,
+    ProductID INT NOT NULL,
     UnitPrice DECIMAL(10, 2),
     Quantity INT,
     Discount DECIMAL(10, 2)
@@ -58,8 +58,8 @@ CREATE TABLE Orders (
 
 
 -- Create table for OrderDetails
-CREATE TABLE OrderDetails (
-    OrderID INT,
+CREATE TABLE Orders (
+    OrderID INT NOT NULL,
     CustomerID VARCHAR(10),
     EmployeeID INT,
     OrderDate DATE,
@@ -78,7 +78,7 @@ CREATE TABLE OrderDetails (
 
 -- Create table for Products
 CREATE TABLE Products (
-    ProductID INT,
+    ProductID INT NOT NULL,
     ProductName VARCHAR(255),
     SupplierID INT,
     CategoryID INT,
@@ -92,21 +92,21 @@ CREATE TABLE Products (
 
 -- Create table for Regions
 CREATE TABLE Regions (
-    RegionID INT,
+    RegionID INT NOT NULL,
     RegionDescription VARCHAR(255)
 );
 
 
 -- Create table for Shippers
 CREATE TABLE Shippers (
-    ShipperID INT,
+    ShipperID INT NOT NULL,
     CompanyName VARCHAR(255),
     Phone VARCHAR(255)
 );
 
 -- Create table for Suppliers
 CREATE TABLE Suppliers (
-    SupplierID INT,
+    SupplierID INT NOT NULL,
     CompanyName VARCHAR(255),
     ContactName VARCHAR(255),
     ContactTitle VARCHAR(255),
@@ -123,7 +123,7 @@ CREATE TABLE Suppliers (
 
 -- Create table for Territories
 CREATE TABLE Territories (
-    TerritoryID VARCHAR(10),
+    TerritoryID VARCHAR(10) NOT NULL,
     TerritoryDescription VARCHAR(255),
     RegionID INT
 );
