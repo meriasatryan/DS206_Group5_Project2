@@ -1,0 +1,2 @@
+-- Description: SQL Script for Creating Dimensional Database Schema
+-- Filename: dimensional_db_creation.sql
