@@ -1,4 +1,5 @@
 import pyodbc
+import uuid
 
 def create_db_connection(server, database, username, password):
     """
@@ -45,3 +46,12 @@ def execute_sql_script(db_connection, sql_script):
     except Exception as e:
         db_connection.rollback()
         print(f"An error occurred: {e}")
+
+def generate_uuid():
+    """
+    Generate a UUID (Universally Unique Identifier).
+
+    Returns:
+        str: A string representation of the generated UUID.
+    """
+    return str(uuid.uuid4())
