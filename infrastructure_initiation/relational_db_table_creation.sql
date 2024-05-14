@@ -3,6 +3,7 @@
 USE ORDERS_RELATIONAL_DB; 
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Categories' AND type = 'U')
 CREATE TABLE Categories (
     CategoryID INT NOT NULL,
     CategoryName VARCHAR(255),
@@ -10,6 +11,7 @@ CREATE TABLE Categories (
 );
 
 -- Create table for Customers
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Customers' AND type = 'U')
 CREATE TABLE Customers (
     CustomerID VARCHAR(10) NOT NULL,
     CompanyName VARCHAR(255),
@@ -26,6 +28,7 @@ CREATE TABLE Customers (
 
 
 -- Create table for Employees
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Employees' AND type = 'U')
 CREATE TABLE Employees (
     EmployeeID INT NOT NULL,
     LastName VARCHAR(255),
@@ -48,6 +51,7 @@ CREATE TABLE Employees (
 
 
 -- Create table for Orders
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'OrderDetails' AND type = 'U')
 CREATE TABLE OrderDetails (
     OrderID INT NOT NULL,
     ProductID INT NOT NULL,
@@ -58,6 +62,7 @@ CREATE TABLE OrderDetails (
 
 
 -- Create table for OrderDetails
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Orders' AND type = 'U')
 CREATE TABLE Orders (
     OrderID INT NOT NULL,
     CustomerID VARCHAR(10),
@@ -77,6 +82,7 @@ CREATE TABLE Orders (
 );
 
 -- Create table for Products
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Products' AND type = 'U')
 CREATE TABLE Products (
     ProductID INT NOT NULL,
     ProductName VARCHAR(255),
@@ -91,6 +97,7 @@ CREATE TABLE Products (
 );
 
 -- Create table for Regions
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Regions' AND type = 'U')
 CREATE TABLE Regions (
     RegionID INT NOT NULL,
     RegionDescription VARCHAR(255)
@@ -98,6 +105,7 @@ CREATE TABLE Regions (
 
 
 -- Create table for Shippers
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Shippers' AND type = 'U')
 CREATE TABLE Shippers (
     ShipperID INT NOT NULL,
     CompanyName VARCHAR(255),
@@ -105,6 +113,7 @@ CREATE TABLE Shippers (
 );
 
 -- Create table for Suppliers
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Suppliers' AND type = 'U')
 CREATE TABLE Suppliers (
     SupplierID INT NOT NULL,
     CompanyName VARCHAR(255),
@@ -122,6 +131,7 @@ CREATE TABLE Suppliers (
 
 
 -- Create table for Territories
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Territories' AND type = 'U')
 CREATE TABLE Territories (
     TerritoryID VARCHAR(10) NOT NULL,
     TerritoryDescription VARCHAR(255),
