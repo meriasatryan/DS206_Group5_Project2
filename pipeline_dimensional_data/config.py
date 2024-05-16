@@ -1,3 +1,19 @@
+# Configuration for dimensional data pipeline
 
-#input_dir = 'C:\\Users\\aasryan\\Downloads\\DS206 Spring2023\\Week12\\python_sql\\queries'
-#sql_server_config = 'C:\\Users\\aasryan\\Downloads\\DS206 Spring2023\\Week12\\py
+# Database name
+database_name = 'ORDERS_DIMENSIONAL_DB'
+
+# Relational table names
+table_names = {
+    'DimCategories': 'DimCategories',
+    'DimCustomers': 'DimCustomers',
+    'DimEmployees': 'DimEmployees',
+    'DimProducts': 'DimProducts',
+    'DimRegion': 'DimRegion',
+    'DimShippers': 'DimShippers',
+    'DimSuppliers': 'DimSuppliers',
+    'DimTerritories': 'DimTerritories',
+    'FactOrders': 'FactOrders'
+}
+CONFIG_PATH = '.\sql_server_config.cfg'
+

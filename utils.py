@@ -1,6 +1,25 @@
 import pyodbc
 import uuid
 
+def get_sql_config():
+    """
+    Retrieves SQL server configuration from a configuration file.
+
+    Returns:
+        tuple: A tuple containing server, database, username, and password.
+    """
+    try:
+        with open('sql_server_config.cfg', 'r') as file:
+            config_lines = file.readlines()
+            server = config_lines[0].strip()
+            database = config_lines[1].strip()
+            username = config_lines[2].strip()
+            password = config_lines[3].strip()
+        return server, database, username, password
+    except FileNotFoundError:
+        print("Config file not found.")
+        return None, None, None, None
+    
 def create_db_connection(server, database, username, password):
     """
     Creates and returns a database connection to a SQL Server instance.

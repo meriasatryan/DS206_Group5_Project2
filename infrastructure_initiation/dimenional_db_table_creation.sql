@@ -69,9 +69,11 @@ CREATE TABLE DimProducts (
     ReorderLevel INT,
     Discontinued BIT,
     ActiveFlag BIT NOT NULL,
-    StartDate DATETIME NOT NULL,
-    EndDate DATETIME
+    StartDate DATE NOT NULL,
+    EndDate DATE,
+    IsCurrent BIT DEFAULT 1
 );
+
 
 -- Dimension table for Region using SCD Type 2
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'DimRegion' AND type = 'U')
@@ -79,10 +81,11 @@ CREATE TABLE DimRegion (
     RegionSK INT IDENTITY(1,1) PRIMARY KEY,
     RegionID INT NOT NULL,
     RegionDescription VARCHAR(255),
-    ValidFrom DATETIME NOT NULL,
-    ValidTo DATETIME NOT NULL,
-    IsCurrent BIT NOT NULL
+    ValidFrom DATE NOT NULL,
+    ValidTo DATE NOT NULL,
+    IsCurrent BIT DEFAULT 1
 );
+
 
 -- Dimension table for Shippers using SCD Type 3
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'DimShippers' AND type = 'U')
@@ -90,9 +93,13 @@ CREATE TABLE DimShippers (
     ShipperSK INT IDENTITY(1,1) PRIMARY KEY,
     ShipperID INT NOT NULL,
     CompanyName VARCHAR(255),
-    Phone VARCHAR(255),
-    PriorPhone VARCHAR(255)
+    StartDate DATE,
+    CurrentPhone VARCHAR(255),
+    PriorPhone VARCHAR(255),
+    EndDate DATE,
+    IsCurrent BIT DEFAULT 1
 );
+
 
 -- Dimension table for Suppliers using SCD Type 3
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'DimSuppliers' AND type = 'U')
@@ -110,8 +117,14 @@ CREATE TABLE DimSuppliers (
     Phone VARCHAR(255),
     PriorPhone VARCHAR(255),
     Fax VARCHAR(255),
-    HomePage VARCHAR(255)
+    HomePage VARCHAR(255),
+    CurrentContactName VARCHAR(255),
+    PriorContactName VARCHAR(255),
+    StartDate DATE,
+    EndDate DATE,
+    IsCurrent BIT DEFAULT 1
 );
+
 
 -- Dimension table for Territories using SCD Type 2
 IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'DimTerritories' AND type = 'U')

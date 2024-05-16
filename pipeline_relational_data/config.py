@@ -1,3 +1,20 @@
+# Database name
+DATABASE_NAME = 'ORDERS_RELATIONAL_DB'
 
-#input_dir = 'C:\\Users\\aasryan\\Downloads\\DS206 Spring2023\\Week12\\python_sql\\queries'
-#sql_server_config = 'C:\\Users\\aasryan\\Downloads\\DS206 Spring2023\\Week12\\py
+# Table names
+TABLE_NAMES = {
+    'CATEGORIES': 'Categories',
+    'CUSTOMERS': 'Customers',
+    'EMPLOYEES': 'Employees',
+    'ORDERS': 'Orders',
+    'ORDER_DETAILS': 'OrderDetails',
+    'PRODUCTS': 'Products',
+    'REGIONS': 'Region',
+    'SHIPPERS': 'Shippers',
+    'SUPPLIERS': 'Suppliers',
+    'TERRITORIES': 'Territories'
+}
+
+CONFIG_PATH = r'.\sql_server_config.cfg'
+
+EXCEL_PATH = r'.\raw_data_source.xlsx'

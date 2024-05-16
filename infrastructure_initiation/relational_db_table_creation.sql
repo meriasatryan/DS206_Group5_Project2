@@ -40,14 +40,13 @@ CREATE TABLE Employees (
     Address VARCHAR(255),
     City VARCHAR(255),
     Region VARCHAR(255),
-    PostalCode VARCHAR(10),
+    PostalCode VARCHAR(255),
     Country VARCHAR(255),
     HomePhone VARCHAR(255),
     Extension VARCHAR(255),
     Notes TEXT,
     ReportsTo INT,
-    PhotoPath VARCHAR(255)
-);
+    PhotoPath TEXT);
 
 
 -- Create table for Orders
@@ -97,8 +96,8 @@ CREATE TABLE Products (
 );
 
 -- Create table for Regions
-IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Regions' AND type = 'U')
-CREATE TABLE Regions (
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Region' AND type = 'U')
+CREATE TABLE Region (
     RegionID INT NOT NULL,
     RegionDescription VARCHAR(255)
 );

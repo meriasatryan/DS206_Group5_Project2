@@ -1,65 +1,70 @@
 import pyodbc
 import pandas as pd
 import os
-
-def create_db_connection(server, database, username, password):
-    """
-    Establishes a database connection using given credentials.
-
-    :param server: Server address
-    :param database: Database name
-    :param username: User name
-    :param password: Password
-    :return: Connection object or None
-    """
+def create_db_connection(server, database):
     try:
-        connection_string = f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};UID={username};PWD={password}'
+        connection_string = f'DRIVER={{SQL Server}};SERVER={server};DATABASE={database};Trusted_Connection=yes;'
         connection = pyodbc.connect(connection_string)
-        print("Database connection successful.")
+        print("INFO: create_db_connection: Database connection successful.")
         return connection
     except Exception as e:
-        print(f"Failed to connect to database: {e}")
+        print(f"ERROR: create_db_connection: Failed to connect to database: {e}")
         return None
-
-def create_table(connection, create_table_sql):
-    """
-    Creates a table in the database based on the provided SQL command.
-
-    :param connection: Database connection object
-    :param create_table_sql: SQL string to create the table
-    """
-    try:
-        cursor = connection.cursor()
-        cursor.execute(create_table_sql)
-        connection.commit()
-        print("Table created successfully.")
-    except Exception as e:
-        connection.rollback()
-        print(f"Failed to create table: {e}")
 
 def load_data_from_excel(excel_path):
     """Load all sheets from an Excel file into a dictionary of DataFrames."""
-    return pd.read_excel(excel_path, sheet_name=None)
+    try:
+        data = pd.read_excel(excel_path, sheet_name=None)
+        print("INFO: load_data_from_excel: Excel file loaded successfully.")
+        return data
+    except Exception as e:
+        print(f"ERROR: load_data_from_excel: Failed to load Excel file: {e}")
+        return None
 
 def create_sql_insert_script(df, table_name, db_name='dbo'):
     """Generate an SQL insert script for a given DataFrame and table name."""
-    columns = ', '.join([f'[{col}]' for col in df.columns])  # Add brackets around column names
-    placeholders = ', '.join(['?' for _ in df.columns])
-    sql_script = f"INSERT INTO {db_name}.{table_name} ({columns}) VALUES ({placeholders});"
-    return sql_script
+    try:
+        columns = ', '.join([f'[{col}]' for col in df.columns])  # Add brackets around column names
+        placeholders = ', '.join(['?' for _ in df.columns])
+        sql_script = f"INSERT INTO {db_name}.{table_name} ({columns}) VALUES ({placeholders});"
+        print(f"INFO: create_sql_insert_script: SQL insert script created for table {table_name}.")
+        print(sql_script)
+        return sql_script
+    except Exception as e:
+        print(f"ERROR: create_sql_insert_script: Failed to create SQL insert script: {e}")
+        return None
 
-def save_sql_script(script, directory, filename):
-    """Save the SQL script to a file in the specified directory."""
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    with open(os.path.join(directory, filename), 'w') as file:
-        file.write(script)
+def execute_sql_script(connection, sql_script, data):
+    """
+    Executes an SQL script using the given database connection.
 
-def process_excel_data(excel_path, output_dir):
-    """Process each sheet in the Excel file, convert to SQL, and save the script."""
+    :param connection: A database connection object
+    :param sql_script: A string containing SQL commands
+    :param data: Data to be inserted
+    """
+    try:
+        cursor = connection.cursor()
+        cursor.executemany(sql_script, data)
+        connection.commit()
+        print("INFO: execute_sql_script: Script executed successfully")
+    except Exception as e:
+        connection.rollback()
+        print(f"ERROR: execute_sql_script: An error occurred: {e}")
+
+def process_excel_data(excel_path, connection):
+    """Process each sheet in the Excel file, convert to SQL, and insert data into the database."""
     data = load_data_from_excel(excel_path)
+    if data is None:
+        print("ERROR: process_excel_data: No data to process.")
+        return
+
     for sheet_name, df in data.items():
-        df = df.where(pd.notnull(df), None)
-        script = create_sql_insert_script(df, sheet_name)
-        save_sql_script(script, output_dir, f'insert_into_{sheet_name}.sql')
+        try:
+            df = df.where(pd.notnull(df), None)
+            print(sheet_name)
+            sql_script = create_sql_insert_script(df, sheet_name)
+            if sql_script:
+                execute_sql_script(connection, sql_script, df.values.tolist())
+        except Exception as e:
+            print(f"ERROR: process_excel_data: An error occurred while processing sheet {sheet_name}: {e}")
 

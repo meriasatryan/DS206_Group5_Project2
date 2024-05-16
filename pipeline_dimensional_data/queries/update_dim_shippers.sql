@@ -1,18 +1,32 @@
-USE ORDERS_DIMENSIONAL_DB;
-GO
+-- USE ORDERS_DIMENSIONAL_DB;
 
--- Assuming there's a source table or view 'SourceShippers' with updated data
-MERGE DimShippers AS DST
-USING (SELECT ShipperID, CompanyName, Phone AS NewPhone FROM SourceShippers) AS SRC
+-- ALTER TABLE DimShippers ADD StartDate DATE, CurrentPhone VARCHAR(255), PriorPhone VARCHAR(255), EndDate DATE, IsCurrent BIT DEFAULT 1;
+
+-- MERGE INTO DimShippers AS DST
+-- USING (SELECT ShipperID, CompanyName, Phone FROM ORDERS_RELATIONAL_DB.dbo.Shippers) AS SRC
+-- ON (SRC.ShipperID = DST.ShipperID)
+
+-- WHEN MATCHED THEN
+--     UPDATE SET
+--         CurrentPhone = SRC.Phone,
+--         PriorPhone = DST.CurrentPhone
+
+-- WHEN NOT MATCHED BY TARGET THEN
+--     INSERT (ShipperID, CompanyName, CurrentPhone, PriorPhone, StartDate, EndDate, IsCurrent)
+--     VALUES (SRC.ShipperID, SRC.CompanyName, SRC.Phone, NULL, GETDATE(), NULL, 1);
+
+-- Alter the table to add necessary columns
+
+-- MERGE statement
+MERGE INTO DimShippers AS DST
+USING (SELECT ShipperID, CompanyName, Phone FROM ORDERS_RELATIONAL_DB.dbo.Shippers) AS SRC
 ON (SRC.ShipperID = DST.ShipperID)
 
-WHEN MATCHED AND (DST.Phone <> SRC.NewPhone) THEN
+WHEN MATCHED THEN
     UPDATE SET
-        DST.CompanyName = SRC.CompanyName,
-        DST.PriorPhone = DST.Phone, -- Move current phone to prior
-        DST.Phone = SRC.NewPhone
+        CurrentPhone = SRC.Phone,
+        PriorPhone = DST.CurrentPhone
 
 WHEN NOT MATCHED BY TARGET THEN
-    INSERT (ShipperID, CompanyName, Phone, PriorPhone)
-    VALUES (SRC.ShipperID, SRC.CompanyName, SRC.NewPhone, NULL);
-
+    INSERT (ShipperID, CompanyName, CurrentPhone, PriorPhone, StartDate, EndDate, IsCurrent)
+    VALUES (SRC.ShipperID, SRC.CompanyName, SRC.Phone, NULL, GETDATE(), NULL, 1);
